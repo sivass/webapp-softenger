@@ -1,9 +1,7 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
+            <h2>Web App</h2>
         </x-slot>
 
         <div class="mb-4 text-sm text-gray-600">
@@ -30,6 +28,11 @@
                 <x-button>
                     {{ __('Email Password Reset Link') }}
                 </x-button>
+            </div>
+            <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                    {{ __('Log in?') }}
+                </a>
             </div>
         </form>
     </x-auth-card>
