@@ -27,5 +27,5 @@ Laravel Breeze is powered by Blade and Tailwind.
 ![Login!](public/demo-image/add-product.png)
 # Product edit Page
 ![Login!](public/demo-image/edit-product.png)
-# Delete Select Product Page
+# Delete Multi Selected Product
 ![Login!](public/demo-image/multi-select-delete.png)
