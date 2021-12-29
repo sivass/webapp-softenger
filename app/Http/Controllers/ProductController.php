@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -14,6 +16,8 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $products = Product::all();
+        return view('product')->with(compact('products'));
     }
 
     /**
@@ -24,6 +28,7 @@ class ProductController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -35,8 +40,26 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name'    => 'required|max:255|unique:products',
+            'price'   => 'required|min:1',
+            'upc'     => 'required|string',
+            'image'   => 'required|image',
+            'status'  => 'required|string',
+        ]);
+        if ($request->file('image')) {
+            $name = $request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('public/product/', $name);
+            $save = new Product();
+            $save->name = $request->name;
+            $save->price = $request->price;
+            $save->upc = $request->upc;
+            $save->image = $name;
+            $save->status = $request->status;
+            $save->save();
+            return redirect('products');
+        }
     }
-
     /**
      * Display the specified resource.
      *
@@ -57,6 +80,8 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
+        $product = Product::findOrFail($id);
+        return view('edit')->with(compact('product'));
     }
 
     /**
@@ -68,7 +93,37 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+    }
+
+    public function updateProduct(Request $request)
+    {
         //
+        $request->validate([
+            'price'   => 'min:1',
+            'upc'     => 'string',
+            'status'  => 'string',
+        ]);
+        $update = new Product();
+        $id = $request->id;
+        if (!empty($request->file('image'))) {
+            $name = $request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('public/product/', $name);
+            $update->where('id', $id)->update([
+                'name'    => $request->name,
+                'price'   => $request->price,
+                'upc'     => $request->upc,
+                'status'  => $request->status,
+                'image'   => $name,
+            ]);
+        } else {
+            $update->where('id', $id)->update([
+                'name'    => $request->name,
+                'price'   => $request->price,
+                'upc'     => $request->upc,
+                'status'  => $request->status,
+            ]);
+        }
+        return redirect('products');
     }
 
     /**
@@ -80,5 +135,20 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+        Product::find($id)->delete();
+        return redirect('products');
+    }
+    /**
+     * Remove the Selected resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAll(Request $request)
+    {
+        //
+        $ids = $request->ids;
+        Product::whereIn('id', $ids)->delete();
+        return response()->json(['success' => 'selected record deleted successfully']);
     }
 }
