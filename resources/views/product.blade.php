@@ -40,15 +40,19 @@
                         <tbody>
                             @foreach ($products as $product)
                             <tr id="ps_{{$product->id}}">
-                                <td><input type="checkbox" name="product_id" id="product_{{$product->id}}" class="checkboxClass" value="{{$product->id}}"></td>
+                                <td><input type="checkbox" name="product_id" id="product_id" class="checkboxClass" value="{{$product->id}}"></td>
                                 <td><img src="{{ asset('storage/product/'.$product->image ) }}" width="100px" height="100px"></td>
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->price}}</td>
                                 <td>{{$product->upc}}</td>
                                 <td>{{$product->status}}</td>
                                 <td>
-                                    <a href="/edit/{{$product->id}}" class="btn btn-primary">Edit</a>
-                                    <a href="/delete/{{$product->id}}" class="btn btn-danger">Delete</a>
+                                    <button class="btn btn-danger editbtn" name="editbtn" type="button">
+                                        Edit
+                                    </button>
+                                    <button class="btn btn-primary deleteBtn" name="deleteBtn" data-id="{{$product->id}}" type="button">
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                             @endforeach

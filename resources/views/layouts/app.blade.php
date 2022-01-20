@@ -27,7 +27,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <!-- Product Scripts -->
-    <script src="{{ asset('js/products.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/products.js') }}" defer></script> -->
 </head>
 
 <body class="font-sans antialiased">
@@ -48,9 +48,33 @@
     </div>
     <script>
         $(function(e) {
+            /**
+             * Delete Single Product record
+             */
+            $(".deleteBtn").click(function(e) {
+                e.preventDefault();
+                var product_id = $(this).attr('data-id');
+                $.ajax({
+                    url: "{{ route('delete.product') }}",
+                    type: "DELETE",
+                    data: {
+                        _token: '{{csrf_token()}}',
+                        id: product_id,
+                    },
+                    success: function(response) {
+                        $("#ps_" + product_id).remove();
+                    }
+                });
+            });
+            /** 
+             *  Multiple product checkbox selector
+             */
             $("#checkboxAll").click(function() {
                 $(".checkboxClass").prop('checked', $(this).prop('checked'));
             });
+            /** 
+             * Delete All Selected products
+             */
             $("#deleteAllSelectRecord").click(function(e) {
                 e.preventDefault();
                 var allIds = [];

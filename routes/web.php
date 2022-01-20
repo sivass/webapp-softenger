@@ -29,6 +29,6 @@ Route::get('/products', [ProductController::class, 'index'])->middleware(['auth'
 Route::post('/save', [ProductController::class, 'store'])->middleware(['auth'])->name('save');
 Route::get('/edit/{id}', [ProductController::class, 'edit'])->middleware(['auth'])->name('edit.id');
 Route::patch('/update', [ProductController::class, 'updateProduct'])->middleware(['auth'])->name('update');
-Route::get('/delete/{id}', [ProductController::class, 'destroy'])->middleware(['auth'])->name('delete.id');
+Route::delete('/delete-product', [ProductController::class, 'delete'])->middleware(['auth'])->name('delete.product');
 Route::delete('/selected-products', [ProductController::class, 'deleteAll'])->middleware(['auth'])->name('selected.product');
 require __DIR__ . '/auth.php';
